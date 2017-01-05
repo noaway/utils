@@ -1,6 +1,8 @@
 package convert
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"sort"
 	"strconv"
@@ -62,6 +64,12 @@ func (f StrTo) Time(format ...string) (time.Time, error) {
 func (f StrTo) MustTime(format ...string) time.Time {
 	t, _ := f.Time(format...)
 	return t
+}
+
+func (f StrTo) Md5() string {
+	m := md5.New()
+	m.Write([]byte(string(f)))
+	return hex.EncodeToString(m.Sum(nil))
 }
 
 // Convert any type to string.

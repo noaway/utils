@@ -12,3 +12,7 @@ func TestToFormat(t *testing.T) {
 func TestToStr(t *testing.T) {
 	t.Log(ToStr(time.Now()))
 }
+
+func TestToStrMd5(t *testing.T) {
+	t.Log(StrTo("王阳").Md5())
+}
