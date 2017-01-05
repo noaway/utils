@@ -1,4 +1,4 @@
-package util
+package utils
 
 func Trycatch(try func(), catch func(e interface{})) {
 	defer func() {
