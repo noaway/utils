@@ -7,7 +7,6 @@ func Add(s []string, a string) []string {
 		}
 	}
 	return append(s, a)
-
 }
 
 func Union(s []string, a []string) []string {
