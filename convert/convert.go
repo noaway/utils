@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"time"
 )
 
 // Convert string to specify type.
@@ -48,6 +49,19 @@ func (f StrTo) String() string {
 		return string(f)
 	}
 	return ""
+}
+
+func (f StrTo) Time(format ...string) (time.Time, error) {
+	var layout = "2006-01-02"
+	if len(format) != 0 {
+		layout = format[0]
+	}
+	return time.Parse(layout, string(f))
+}
+
+func (f StrTo) MustTime(format ...string) time.Time {
+	t, _ := f.Time(format...)
+	return t
 }
 
 // Convert any type to string.
