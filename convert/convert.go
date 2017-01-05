@@ -53,6 +53,8 @@ func (f StrTo) String() string {
 	return ""
 }
 
+// String format conversion time
+// format must go time source has been package format
 func (f StrTo) Time(format ...string) (time.Time, error) {
 	var layout = "2006-01-02"
 	if len(format) != 0 {
