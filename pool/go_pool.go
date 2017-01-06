@@ -1,52 +1,38 @@
 package pool
 
 import (
-	"sync"
-	"time"
+// "fmt"
+// "time"
 )
 
-var (
-	jobs chan func()
-	wg   sync.WaitGroup
-)
-
-func NewWork(g *GWorker) *GWorker {
-	if g != nil {
-		initjob(g.GoMaxNumber)
-		jobs = make(chan func(), g.GoMaxNumber)
-		return g
-	}
-	return nil
+type Worker struct {
+	jobs   chan func()
+	notify chan int
 }
 
-func worker(id int) {
-	wg.Done()
-	time.Sleep(time.Second * 2)
-	for j := range jobs {
-		j()
-	}
+func NewWorker() *Worker {
+	w := new(Worker)
+	w.jobs = make(chan func(), 100)
+	w.notify = make(chan int, 1)
+	go w.working()
+	w.notify <- 10
+	return w
 }
 
-func initjob(count int) {
-	for w := 1; w <= count; w++ {
-		if w%1000 == 0 {
-			time.Sleep(time.Nanosecond * 200)
+//Create a new goroutine to run a task
+func (w *Worker) working() {
+	for {
+		select {
+		case f := <-w.jobs:
+			f()
+		case nums := <-w.notify:
+			for i := 0; i < nums; i++ {
+				go w.working()
+			}
 		}
-		wg.Add(1)
-		go worker(w)
 	}
 }
 
-type GWorker struct {
-	sync.RWMutex
-	m           sync.Mutex
-	GoMaxNumber int
-}
-
-func (self *GWorker) JoinWork(f func()) {
-	jobs <- f
-}
-
-func (self *GWorker) Wait() {
-	wg.Wait()
+func (w *Worker) Go(f func()) {
+	w.jobs <- f
 }

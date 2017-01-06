@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -51,6 +52,14 @@ func (f StrTo) String() string {
 		return string(f)
 	}
 	return ""
+}
+
+func (f StrTo) ToLower() string {
+	return strings.ToLower(f.String())
+}
+
+func (f StrTo) ToUpper() string {
+	return strings.ToUpper(f.String())
 }
 
 // String format conversion time

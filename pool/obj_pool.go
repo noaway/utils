@@ -1,7 +1,7 @@
 package pool
 
 import (
-	"fmt"
+// "fmt"
 )
 
 type ObjPool struct {
